@@ -1,11 +1,12 @@
 setuptools>=65.5.1
 wheel>=0.37.1
-pandas==2.0.3
-numpy==1.24.4
-torch>=2.0.0,<=2.0.2
+pandas<2.0.0,>=1.0.0  # Adjusted for compatibility with argilla
+numpy<1.24.0,>=1.23.0  # Adjusted for compatibility with argilla
+torch==1.11.0  # Adjusted for compatibility with torchvision
+torchvision==0.12.0  # Added to match torch version
 matplotlib==3.7.2
 scikit-learn==1.3.0
-transformers==4.31.0
+transformers>=4.34.0,<5.0.0  # Adjusted for compatibility with sentence-transformers
 fuzzywuzzy==0.18.0
 nltk==3.8.1
-streamlit>=1.20.0  # Specify the version you need
+streamlit>=1.20.0
