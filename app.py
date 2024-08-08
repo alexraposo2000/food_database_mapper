@@ -1,8 +1,8 @@
-import subprocess
+# import subprocess
 import sys
 
 # Upgrade pip
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'])
+# subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'])
 
 
 import streamlit as st
