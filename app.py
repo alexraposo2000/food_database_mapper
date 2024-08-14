@@ -90,16 +90,21 @@ def main():
                 for m in methods_select:
                     matches_df, scores_df, flagged_df, high_conf_df, accuracy, plot_percents_ls = mapping_function(df1, col1, df2, col2, df3, threshold=0.5, methods=[m], dataset_name=source)
                     # matches_df, scores_df, plot_percents_ls = mapping_function(df1, col1, df2, col2, df3, threshold=0.5, methods=[m], dataset_name=source)
-                    st.header('Accuracy ('+m+'):'+string(accuracy))
+                    if df3 is not None:
+                        st.header('Accuracy ('+m+'):'+string(accuracy))
                     st.header('Matches Dataframe ('+m+')')
                     st.dataframe(matches_df)
                     st.header('Scores Dataframe ('+m+')')
                     st.dataframe(scores_df)
                     st.header('Flagged Matches Dataframe ('+m+')')
                     st.dataframe(flagged_df)
-                    st.header('High Confidence but Incorrect Match Dataframe ('+m+')')
-                    st.dataframe(high_conf_df)
-                    to_download.append([matches_df,scores_df,flagged_df,high_conf_df])
+                    if df3 is not None:
+                        st.header('High Confidence but Incorrect Match Dataframe ('+m+')')
+                        st.dataframe(high_conf_df)
+                    if df3 is not None:
+                        to_download.append([matches_df,scores_df,flagged_df,high_conf_df])
+                    else:
+                        to_download.append([matches_df,scores_df,flagged_df])
 
                 # Create and download ZIP containing both CSVs
                 zip_buffer = create_zip(to_download, source, methods_select)
