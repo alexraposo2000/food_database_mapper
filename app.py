@@ -30,7 +30,7 @@ def create_zip(dataframes, source, methods):
     buffer = BytesIO()
     with ZipFile(buffer, 'w') as z:
         for d in range(len(dataframes)):
-            if len(dataframes)==2:
+            if len(dataframes[d])==3:
                 z.writestr(f'Matches_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][0]))
                 z.writestr(f'Scores_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][1]))
                 z.writestr(f'Flagged_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][2]))
