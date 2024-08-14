@@ -30,8 +30,15 @@ def create_zip(dataframes, source, methods):
     buffer = BytesIO()
     with ZipFile(buffer, 'w') as z:
         for d in range(len(dataframes)):
-            z.writestr(f'Matches_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][0]))
-            z.writestr(f'Scores_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][1]))
+            if len(dataframes)==2:
+                z.writestr(f'Matches_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][0]))
+                z.writestr(f'Scores_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][1]))
+                z.writestr(f'Flagged_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][2]))
+            else:
+                z.writestr(f'Matches_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][0]))
+                z.writestr(f'Scores_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][1]))
+                z.writestr(f'Flagged_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][2]))
+                z.writestr(f'High_Confidence_Incorrect_Matches_Dataframe_{source}_{methods[d]}.csv', to_csv(dataframes[d][3]))
     buffer.seek(0)
     return buffer
 
@@ -102,9 +109,9 @@ def main():
                         st.header('High Confidence but Incorrect Match Dataframe ('+m+')')
                         st.dataframe(high_conf_df)
                     if df3 is not None:
-                        to_download.extend([matches_df,scores_df,flagged_df,high_conf_df])
+                        to_download.append([matches_df,scores_df,flagged_df,high_conf_df])
                     if df3 is None:
-                        to_download.extend([matches_df,scores_df,flagged_df])
+                        to_download.append([matches_df,scores_df,flagged_df])
 
                 # Create and download ZIP containing both CSVs
                 zip_buffer = create_zip(to_download, source, methods_select)
