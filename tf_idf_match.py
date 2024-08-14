@@ -5,6 +5,7 @@ import nltk
 from clean import cleaner, StopWords
 from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
+nltk.download('wordnet')
 stopwords = StopWords()
 
 def preprocess(text, type='strings'):
