@@ -4,7 +4,7 @@ import pandas as pd
 import nltk
 from clean import cleaner, StopWords
 from nltk.stem import WordNetLemmatizer
-
+nltk.download('punkt')
 stopwords = StopWords()
 
 def preprocess(text, type='strings'):
