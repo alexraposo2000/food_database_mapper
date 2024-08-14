@@ -1,6 +1,6 @@
 setuptools>=65.5.1
 wheel>=0.37.1
-numpy>=1.24.0 #numpy==1.26.4
+numpy==1.26.4
 pandas>=1.5.3,<2.0.0  # Adjusted for compatibility with numpy and Python 3.11
 # numpy>=1.24.0
 torch>=2.0.0  # Ensure this version is compatible with Python 3.11
