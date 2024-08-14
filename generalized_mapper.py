@@ -195,6 +195,8 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
                 print("Columns ", col1," and/or ",col2," not found in ground truth data provided. No accuracy metrics will be computed.")
         else:
             plot_percents = None
+            accuracy = None
+            high_conf_df = None
     return matches, scores, flagged_df, high_conf_df, accuracy, plot_percents
 
 
