@@ -2,10 +2,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import nltk
-from clean import cleaner, StopWords
-from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
 nltk.download('wordnet')
+from clean import cleaner, StopWords
+from nltk.stem import WordNetLemmatizer
+
 stopwords = StopWords()
 
 def preprocess(text, type='strings'):
