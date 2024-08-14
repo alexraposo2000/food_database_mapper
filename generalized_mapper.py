@@ -12,7 +12,7 @@ from tf_idf_match import *
 # from BERT_match import *
 import numpy as np
 from datetime import datetime
-from bar_chart import *
+# from bar_chart import *
 import os
 
 def save_to_folder(df, file_name,folder_name = 'output_CSVs'):
