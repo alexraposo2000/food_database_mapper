@@ -5,8 +5,6 @@ import random
 # from plots import *
 # Begin mapper SECTION
 from clean import *
-import paramiko
-
 
 from BERT_match import *
 from fuzzy_match import *
@@ -56,7 +54,7 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
     # tp_lists_ASA24 = []
 
     for method in methods:
-        
+
         # ** just noticed cleaner not called in mapper.py. Calling it here but need to integrate that into the mapper directly
         #VERSION FOR APP.py
         data1 = df1
@@ -171,34 +169,34 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
             fp_lists.append(fp_list)
             tp_lists.append(tp_list)
             return matches, scores, flagged_df, high_conf_df, accuracy
-    
-            print(method)
-            # if source == "WWEIA":
-            # print("WWEIA")
-            # wweia_ground_truth_matches_path = './ground_truth_data/string_match.csv'
-            # wweia_ground_truth_matches = pd.read_csv(wweia_ground_truth_matches_path)
-            # wweia_ground_truth_matches = wweia_ground_truth_matches[['DRXFCLD','parent_desc']]
-    
-            matches, scores = prep_data(method,data1,data2,ground_truth_matches)
-            # print('SCORES HERE: ',scores)
-            scores = scores['1']
-            # matches = pd.read_csv(method+'_'+'matches_testing.csv')
-            matches = [[matches['list1'][i],matches['1'][i]] for i in range(len(matches['list1']))]
-            # convert ground truth to correct format for checking accuracy
-            if df3 is not None:
-                d3_cols = list(df3.columns)
-                if (col1 in d3_cols) and (col2 in d3_cols):
-                    ground_truth_matches_ls = [[df3[col1][i],df3[col2][i]] for i in range(len(df3[col1]))]
-                    matches, scores, flagged_df, high_conf_df, accuracy = check_accuracy(method, matches, scores, ground_truth_matches_ls,dataset_name)
-                    # correct_percent = (len(flagged_df)+len(high_conf_df))/len(df1)
-                    plot_percents.append(accuracy)
-    
-                else:
-                    print("Columns ", col1," and/or ",col2," not found in ground truth data provided. No accuracy metrics will be computed.")
+
+        print(method)
+        # if source == "WWEIA":
+        # print("WWEIA")
+        # wweia_ground_truth_matches_path = './ground_truth_data/string_match.csv'
+        # wweia_ground_truth_matches = pd.read_csv(wweia_ground_truth_matches_path)
+        # wweia_ground_truth_matches = wweia_ground_truth_matches[['DRXFCLD','parent_desc']]
+
+        matches, scores = prep_data(method,data1,data2,ground_truth_matches)
+        # print('SCORES HERE: ',scores)
+        scores = scores['1']
+        # matches = pd.read_csv(method+'_'+'matches_testing.csv')
+        matches = [[matches['list1'][i],matches['1'][i]] for i in range(len(matches['list1']))]
+        # convert ground truth to correct format for checking accuracy
+        if df3 is not None:
+            d3_cols = list(df3.columns)
+            if (col1 in d3_cols) and (col2 in d3_cols):
+                ground_truth_matches_ls = [[df3[col1][i],df3[col2][i]] for i in range(len(df3[col1]))]
+                matches, scores, flagged_df, high_conf_df, accuracy = check_accuracy(method, matches, scores, ground_truth_matches_ls,dataset_name)
+                # correct_percent = (len(flagged_df)+len(high_conf_df))/len(df1)
+                plot_percents.append(accuracy)
+
             else:
-                plot_percents = None
-                accuracy = None
-                high_conf_df = None
+                print("Columns ", col1," and/or ",col2," not found in ground truth data provided. No accuracy metrics will be computed.")
+        else:
+            plot_percents = None
+            accuracy = None
+            high_conf_df = None
     return matches, scores, flagged_df, high_conf_df, accuracy, plot_percents
 
 
