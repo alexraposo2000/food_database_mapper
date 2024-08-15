@@ -86,7 +86,7 @@ def main():
 
         # Select mapping method(s)
         st.header('Select Mapping Method(s)')
-        methods_select = st.multiselect('Select desired mapping method(s) from the following menu', ['fuzzy', 'tf-idf','BERT'])
+        methods_select = st.multiselect('Select desired mapping method(s) from the following menu', ['fuzzy', 'tf-idf']) # 'BERT'
         st.write('* Note: selecting multiple methods will return multiple mappings')
         if col1 and col2 and methods_select:
             # Process files when all inputs are provided
