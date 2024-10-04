@@ -128,46 +128,65 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
             # scores = scores['1'] # REMOVED BC scores IS A SERIES
             flagged_matches = [] # contains lists of [ground truth starting term, ground truth match, top match with a low score]
             high_conf_matches = []
-            for g in ground_truth_matches:
-                # print('counting',g)
+            if ground_truth_matches != None:
+                for g in ground_truth_matches:
+                    # print('counting',g)
+                    for m in range(len(matches)):
+                        # print(g[0],'--BREAK--',matches[m][0])
+                        if g[0] == matches[m][0]:
+                            if g[1] == matches[m][1]: # if we find a correct match
+                                correct.append(1)
+                                tp_list.append(tp_list[-1]+1)
+                                fp_list.append(fp_list[-1])
+                                break
+                            # if it's not "correct", check the confidence of the match and then choose whether or not to flag it
+                            elif scores[m]>=0.5:
+                                high_conf.append(1)
+                                high_conf_matches.append([g[0], g[1], matches[m][1]])
+                                fp_list.append(fp_list[-1]+1)
+                                tp_list.append(tp_list[-1])
+                            else:
+                                num_flagged.append(1)
+                                flagged_matches.append([g[0], g[1], matches[m][1]])
+                                fp_list.append(fp_list[-1]+1)
+                                tp_list.append(tp_list[-1])
+
+                flagged_df = pd.DataFrame()
+                flagged_df['ground truth'] = [f[0] for f in flagged_matches]
+                flagged_df['ground truth match'] = [f[1] for f in flagged_matches]
+                flagged_df['low conf match'] = [f[2] for f in flagged_matches]
+                high_conf_df = pd.DataFrame()
+                high_conf_df['ground truth'] = [f[0] for f in high_conf_matches]
+                high_conf_df['ground truth match'] = [f[1] for f in high_conf_matches]
+                high_conf_df['low conf match'] = [f[2] for f in high_conf_matches]
+                accuracy = evaluate(correct, high_conf, num_flagged,method)
+                fp_lists.append(fp_list)
+                tp_lists.append(tp_list)
+            else:
                 for m in range(len(matches)):
                     # print(g[0],'--BREAK--',matches[m][0])
-                    if g[0] == matches[m][0]:
-                        if g[1] == matches[m][1]: # if we find a correct match
-                            correct.append(1)
-                            tp_list.append(tp_list[-1]+1)
-                            fp_list.append(fp_list[-1])
-                            break
                         # if it's not "correct", check the confidence of the match and then choose whether or not to flag it
-                        elif scores[m]>=0.5:
-                            high_conf.append(1)
-                            high_conf_matches.append([g[0], g[1], matches[m][1]])
-                            fp_list.append(fp_list[-1]+1)
-                            tp_list.append(tp_list[-1])
-                        else:
-                            num_flagged.append(1)
-                            flagged_matches.append([g[0], g[1], matches[m][1]])
-                            fp_list.append(fp_list[-1]+1)
-                            tp_list.append(tp_list[-1])
+                    if scores[m]>=0.5:
+                        high_conf.append(1)
+                        high_conf_matches.append([matches[m][0], matches[m][1]])
+                    else:
+                        num_flagged.append(1)
+                        flagged_matches.append([matches[m][0], matches[m][1]])
 
-            flagged_df = pd.DataFrame()
-            flagged_df['ground truth'] = [f[0] for f in flagged_matches]
-            flagged_df['ground truth match'] = [f[1] for f in flagged_matches]
-            flagged_df['low conf match'] = [f[2] for f in flagged_matches]
-            high_conf_df = pd.DataFrame()
-            high_conf_df['ground truth'] = [f[0] for f in high_conf_matches]
-            high_conf_df['ground truth match'] = [f[1] for f in high_conf_matches]
-            high_conf_df['low conf match'] = [f[2] for f in high_conf_matches]
 
+                flagged_df = pd.DataFrame()
+                flagged_df['starting term'] = [f[0] for f in flagged_matches]
+                flagged_df['low conf match'] = [f[1] for f in flagged_matches]
+                high_conf_df = pd.DataFrame()
+                high_conf_df['starting term'] = [f[0] for f in high_conf_matches]
+                high_conf_df['high conf match'] = [f[1] for f in high_conf_matches]
+                accuracy = None
             # for f in flagged_matches:
             #     flagged_df = pd.concat([flagged_df, pd.DataFrame(f)])
             save_to_folder(flagged_df,method+'_'+dataset_name+'_flagged.csv')
             # flagged_df.to_csv(method+'_'+'flagged.csv')
             save_to_folder(high_conf_df,method+'_'+dataset_name+'_high_conf.csv')
             # high_conf_df.to_csv(method+'_'+'high_conf.csv')
-            accuracy = evaluate(correct, high_conf, num_flagged,method)
-            fp_lists.append(fp_list)
-            tp_lists.append(tp_list)
             return matches, scores, flagged_df, high_conf_df, accuracy
 
         print(method)
