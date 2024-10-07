@@ -22,6 +22,7 @@ def fuzzy_match(list1, list2, type, clean=False, clean_punct=', '):
     for l1 in list1:
         scored_list2 = [(fuzz.ratio(l1, l2), l2) for l2 in list2]
         scored_list2.sort(reverse=True, key=lambda x: x[0])
+        scored_list2 = scored_list2/100
 
         top_match = scored_list2[0][1]
         top_score = scored_list2[0][0]
