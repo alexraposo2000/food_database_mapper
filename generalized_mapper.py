@@ -128,6 +128,7 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
             # scores = scores['1'] # REMOVED BC scores IS A SERIES
             flagged_matches = [] # contains lists of [ground truth starting term, ground truth match, top match with a low score]
             high_conf_matches = []
+            flagged_df = pd.DataFrame()
             if ground_truth_matches != None:
                 for g in ground_truth_matches:
                     # print('counting',g)
@@ -151,7 +152,6 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
                                 fp_list.append(fp_list[-1]+1)
                                 tp_list.append(tp_list[-1])
 
-                flagged_df = pd.DataFrame()
                 flagged_df['ground truth'] = [f[0] for f in flagged_matches]
                 flagged_df['ground truth match'] = [f[1] for f in flagged_matches]
                 flagged_df['low conf match'] = [f[2] for f in flagged_matches]
@@ -174,7 +174,6 @@ def mapping_function(df1,col1,df2,col2,df3 = None,threshold = 0.5,methods= ["fuz
                         flagged_matches.append([matches[m][0], matches[m][1]])
 
 
-                flagged_df = pd.DataFrame()
                 flagged_df['starting term'] = [f[0] for f in flagged_matches]
                 flagged_df['low conf match'] = [f[1] for f in flagged_matches]
                 high_conf_df = pd.DataFrame()
