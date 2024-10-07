@@ -22,7 +22,6 @@ def fuzzy_match(list1, list2, type, clean=False, clean_punct=', '):
     for l1 in list1:
         scored_list2 = [(fuzz.ratio(l1, l2), l2) for l2 in list2]
         scored_list2.sort(reverse=True, key=lambda x: x[0])
-        scored_list2 = scored_list2/100
 
         top_match = scored_list2[0][1]
         top_score = scored_list2[0][0]
@@ -31,6 +30,6 @@ def fuzzy_match(list1, list2, type, clean=False, clean_punct=', '):
         scores.append(top_score)
 
     df_matches = pd.DataFrame({'list1': list1, '1': matches})
-    df_scores = pd.DataFrame({'1': scores})
+    df_scores = pd.DataFrame({'1': scores})/100
     # print(df_matches, df_scores)
     return df_matches, df_scores
